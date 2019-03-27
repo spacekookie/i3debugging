@@ -1,0 +1,10 @@
+[package]
+name = "test-server"
+version = "0.0.0"
+authors = ["Katharina Fey <kookie@spacekookie.de>"]
+edition = "2018"
+
+[dependencies]
+actix-web = "0.7"
+actix = "0.7"
+libc = "0.2"
