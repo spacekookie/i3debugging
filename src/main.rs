@@ -1,12 +1,12 @@
 use actix_web::{http, server, App, Path, Responder};
-use libc::{mkfifo, open, write, O_NONBLOCK, O_WRONLY};
+use libc::{open, write, O_WRONLY};
 use std::ffi::c_void;
 
 const FIFO_NAME: *const i8 = "/tmp/i3debugger\0".as_ptr() as *const i8;
 static mut FIFO: i32 = 0;
 
 fn ping(msg: &str) {
-    unsafe { write(FIFO, msg.as_bytes().as_ptr() as *const c_void, msg.len()) };
+    dbg!(unsafe { write(FIFO, msg.as_bytes().as_ptr() as *const c_void, msg.len()) });
 }
 
 /// On success simply echo back the <id>
@@ -19,10 +19,8 @@ fn index(info: Path<String>) -> impl Responder {
 }
 
 fn main() {
-    unsafe {
-        // Lua promises to create a fifo for us 🤞
-        FIFO = dbg!(open(FIFO_NAME, O_WRONLY | O_NONBLOCK));
-    }
+    // Lua promises to create a fifo for us 🤞
+    unsafe { FIFO = dbg!(open(FIFO_NAME, O_WRONLY)) };
 
     server::new(|| App::new().route("/{id}/", http::Method::GET, index))
         .bind("127.0.0.1:1312")
