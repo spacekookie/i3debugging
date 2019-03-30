@@ -12,6 +12,28 @@ This set of tools can reliably reproduce the issue and run in a git-bisect.
 - `default.nix` allows you to reproducibly build an environment
   with all of these tools present in your path
 
+## How to build
+
+It's generally recommended to build this example with [nix]:
+
+[nix]: https://nixos.org/nix
+
+```console
+$ nix-build
+```
+
+This will provide all dependencies you need.
+
+Manually make you have the `nixpkgs` module checked out too!
+
+Then simply run:
+
+```console
+$ git bisect --good <hash>
+$ git bisect --bad <hash>
+$ git bisect -r result/bin/bisect.sh
+```
+
 ## Findings
 
 WIP: will update as new information comes up :)
